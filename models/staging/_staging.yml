@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: Cleaned, typed order records at order-line grain.
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+      - name: order_status
+        tests:
+          - accepted_values:
+              values: ['PLACED', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'RETURNED']
+
+  - name: stg_customers
+    description: Cleaned customer records.
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+      - name: email
+        tests:
+          - not_null
+
+  - name: stg_products
+    description: Cleaned product catalog records.
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+          - unique

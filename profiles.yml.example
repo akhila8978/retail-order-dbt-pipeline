@@ -1,0 +1,17 @@
+# Copy this to ~/.dbt/profiles.yml and fill in your own values.
+# NEVER commit your real profiles.yml (it contains credentials) — this repo's
+# .gitignore already excludes profiles.yml, only profiles.yml.example is tracked.
+
+retail_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: TRANSFORMER
+      database: RETAIL_DB
+      warehouse: TRANSFORM_WH
+      schema: dbt_dev
+      threads: 4

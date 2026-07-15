@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: fact_orders
+    description: >
+      One row per order line. Grain: order_id. Joins customer and product
+      context and computes gross margin per line.
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_id
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: product_id
+      - name: order_total
+        tests:
+          - not_null
+
+  - name: dim_customer
+    description: One row per customer.
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_product
+    description: One row per product in the catalog.
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_date
+    description: Generated calendar date spine, 2023-01-01 through 2026-12-31.
+    columns:
+      - name: date_day
+        tests:
+          - not_null
+          - unique

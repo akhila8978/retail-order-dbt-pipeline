@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: retail_raw
+    # Points at the schema your existing Snowpipe/Streams-and-Tasks pipeline
+    # loads into. Update database/schema to match your actual pipeline.
+    database: RETAIL_DB
+    schema: RAW
+    tables:
+      - name: orders
+        description: Raw order records landed by Snowpipe, upserted via Streams/Tasks CDC.
+        columns:
+          - name: order_id
+            tests:
+              - not_null
+              - unique
+      - name: customers
+        description: Raw customer records.
+        columns:
+          - name: customer_id
+            tests:
+              - not_null
+              - unique
+      - name: products
+        description: Raw product catalog records.
+        columns:
+          - name: product_id
+            tests:
+              - not_null
+              - unique
